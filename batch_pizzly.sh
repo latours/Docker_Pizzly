@@ -1,7 +1,8 @@
 #!/bin/bash
-###NAME: SARA LATOUR
+###CREATOR: SARA LATOUR
 ###CONTACT: saralatour@outlook.com
 ###UPDATED:21/09/17
+
 
 #Customization:
 
@@ -34,10 +35,10 @@ cat << "EOF"
 EOF
 #CMD Line Arguments:
 inputdir=$1
-
-if [ $# -ne 1 ]
+outputdir=$2
+if [ $# -ne 2 ]
   then
-    echo "\nERROR MESSAGE:\nPlease ensure that the full path to the Fastq Directory is provided:\n"
+    echo "\nERROR MESSAGE:\nPlease ensure that the full path to the Input and Output Directories are provided:\n"
 	exit 1
 fi
 
@@ -48,20 +49,26 @@ else echo "Input is not a valid directory... exiting now\n";
      exit 1
 fi
 
+
+echo "Checking if Output directory is valid..."
+if   [ -d "${outputdir}" ]
+then echo "✓"
+else echo "Output is not a valid directory... exiting now\n";
+     exit 1
+fi
+
+
 #Input:
 echo "The Directory Selected is:$inputdir\n"
 
 #Create Output File
-echo "Creating Output Directory (Output Files Location:$inputdir/Output)\n"
-rm -Rf $inputdir/Output
-mkdir $inputdir/Output
-outputdir=$inputdir/Output
-mkdir -p $inputdir/Output/Fastas
-mkdir -p $inputdir/Output/Json
+echo "Creating Sub-Directories for Output..."
+mkdir -p $outputdir/Fastas
+mkdir -p $outputdir/Json
 
-#Create File Lists
+#Create File Lists - Note to self: Change it to find later.
 ls $inputdir > $outputdir/filenames.txt 
-cd $outputdir 
+cd $outputdir
 
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -80,7 +87,7 @@ echo "Running Pizzly Fusion Caller on the following RNA-seq Pairs IDs...\n"
 cat $outputdir/kallisto_unique_list.txt
 echo "\nStarting Kallisto and Pizzly runs for files from $inputdir directory now...\n"
 
-cat $outputdir/kallisto_unique_list.txt | while read line; do echo "$line"; $kallistopath/kallisto quant -i $outputdir/index.idx --fusion -o $outputdir/"$line"_pizzly_out $inputdir/"$line"R1_001.fastq.gz $inputdir/"$line"R2_001.fastq.gz ; $pizzlypath/build/pizzly -k 31 --gtf $GTF --cache index.cache.txt --align-score 2 --insert-size 400 --fasta $cdna --output "$line"pizzly_out $outputdir/"$line"_pizzly_out/fusion.txt ; $pizzlypath/scripts/flatten_json.py "$line"_pizzly_out.json > "$line""$now".txt;tr ' ' '\t'<"$line""$now".txt > "$line""$now"_final.txt ; awk '{print $1,$2,$3,$4,$5,$6}' "$line""$now"_final.txt > "$line""$now"_no_filter.txt ; awk '{if ($5&&$6 != 0 ) print $1,$2,$3,$4,$5,$6;}' "$line""$now"_final.txt > "$line""$now"_sc_pc_filter.txt ; rm "$line""$now".txt; done
+cat $outputdir/kallisto_unique_list.txt | while read line; do echo "$line"; $kallistopath/kallisto quant -i $outputdir/index.idx --fusion -o $outputdir/"$line"pizzly_out $inputdir/"$line"R1_001.fastq.gz $inputdir/"$line"R2_001.fastq.gz ; $pizzlypath/build/pizzly -k 31 --gtf $GTF --cache index.cache.txt --align-score 2 --insert-size 400 --fasta $cdna --output "$line"pizzly_out $outputdir/"$line"pizzly_out/fusion.txt ; $pizzlypath/scripts/flatten_json.py "$line"pizzly_out.json > "$line""$now".txt;tr ' ' '\t'<"$line""$now".txt > "$line""$now"_final.txt ; awk '{print $1,$2,$3,$4,$5,$6}' "$line""$now"_final.txt > "$line""$now"_no_filter.txt ; awk '{if ($5&&$6 != 0 ) print $1,$2,$3,$4,$5,$6;}' "$line""$now"_final.txt > "$line""$now"_sc_pc_filter.txt ; rm "$line""$now".txt; done
 
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
