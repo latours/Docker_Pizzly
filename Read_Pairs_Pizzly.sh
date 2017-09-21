@@ -1,21 +1,21 @@
 #!/bin/bash
-###MAINTAINER: SARA LATOUR
+###NAME: SARA LATOUR
 ###CONTACT: saralatour@outlook.com
 ###UPDATED:21/09/17
 
 #Customization:
 
 #Path to Pizzly 
-pizzlypath=/data/pizzly/
+pizzlypath=/home/saral/Documents/Fusioncallers/pizzly/pizzly
 
 #Path to Kallisto
-kallistopath=/data/kallisto/
+kallistopath=/home/saral/Documents/Fusioncallers/pizzly/kallisto_linux-v0.43.1
 
 #Path to Reference cDNA Fasta File
-cdna=data/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz  
+cdna=/home/saral/Documents/Fusioncallers/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz  
 
 #Path to Reference GTF File
-GTF=/data/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz 
+GTF=/home/saral/Documents/Fusioncallers/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz 
 
 ####NOTHING BELOW THIS LINE REQUIRES CHANGING####
 
@@ -80,7 +80,7 @@ echo "Running Pizzly Fusion Caller on the following RNA-seq Pairs IDs...\n"
 cat $outputdir/kallisto_unique_list.txt
 echo "\nStarting Kallisto and Pizzly runs for files from $inputdir directory now...\n"
 
-cat $outputdir/kallisto_unique_list.txt | while read line; do echo "Processing $line read pairs currently..."; $kallistopath/kallisto quant -i $outputdir/index.idx --fusion -o $outputdir/"$line"_pizzly_out $inputdir/"$line"R1_001.fastq.gz $inputdir/"$line"R2_001.fastq.gz ; $pizzlypath/build/pizzly -k 31 --gtf $GTF --cache index.cache.txt --align-score 2 --insert-size 400 --fasta $cdna --output "$line"_pizzly_out $outputdir/"$line"_pizzly_out/fusion.txt ; $pizzlypath/scripts/flatten_json.py "$line"_pizzly_out.json > "$line"_"$now".txt;tr ' ' '\t'<"$line"_"$now".txt > "$line"_"$now"_final.txt ; awk '{print $1,$2,$3,$4,$5,$6}' "$line"_"$now"_final.txt > "$line"_"$now"no_filter.txt ; awk '{if ($5&&$6 != 0 ) print $1,$2,$3,$4,$5,$6;}' "$line"_"$now"_final.txt > "$line"_"$now"_sc_pc_filter.txt ; rm "$line"_"$now".txt; done
+cat $outputdir/kallisto_unique_list.txt | while read line; do echo "$line"; $kallistopath/kallisto quant -i $outputdir/index.idx --fusion -o $outputdir/"$line"_pizzly_out $inputdir/"$line"R1_001.fastq.gz $inputdir/"$line"R2_001.fastq.gz ; $pizzlypath/build/pizzly -k 31 --gtf $GTF --cache index.cache.txt --align-score 2 --insert-size 400 --fasta $cdna --output "$line"pizzly_out $outputdir/"$line"_pizzly_out/fusion.txt ; $pizzlypath/scripts/flatten_json.py "$line"_pizzly_out.json > "$line""$now".txt;tr ' ' '\t'<"$line""$now".txt > "$line""$now"_final.txt ; awk '{print $1,$2,$3,$4,$5,$6}' "$line""$now"_final.txt > "$line""$now"_no_filter.txt ; awk '{if ($5&&$6 != 0 ) print $1,$2,$3,$4,$5,$6;}' "$line""$now"_final.txt > "$line""$now"_sc_pc_filter.txt ; rm "$line""$now".txt; done
 
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
