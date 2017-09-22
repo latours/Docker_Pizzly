@@ -4,7 +4,7 @@
 FROM ubuntu:16.04
 
 # Metadata
-LABEl base.image="ubuntu:16.04"
+LABEL base.image="ubuntu:16.04"
 LABEL version="4"
 LABEL software="Biocontainers base Image"
 LABEL software.version="08252016"
