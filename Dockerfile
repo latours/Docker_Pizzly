@@ -63,6 +63,6 @@ RUN ls /data/reference_genome/
 
 #RUN cp /data/pizzly/build/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
-RUN cp /data/batch_batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
+RUN cp /data/batch/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
 ENTRYPOINT ["/data/pizzly/batch_pizzly.sh"]
