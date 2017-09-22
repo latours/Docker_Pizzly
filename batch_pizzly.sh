@@ -7,16 +7,15 @@
 #Customization:
 
 #Path to Pizzly 
-pizzlypath=/home/saral/Documents/Fusioncallers/pizzly/pizzly
+pizzlypath=/data/pizzly/build/pizzly
 
 #Path to Kallisto
-kallistopath=/home/saral/Documents/Fusioncallers/pizzly/kallisto_linux-v0.43.1
-
+kallistopath=/data/kallisto/kallisto
 #Path to Reference cDNA Fasta File
-cdna=/home/saral/Documents/Fusioncallers/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz  
+cdna=/data/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz  
 
 #Path to Reference GTF File
-GTF=/home/saral/Documents/Fusioncallers/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz 
+GTF=/data/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz 
 
 ####NOTHING BELOW THIS LINE REQUIRES CHANGING####
 
