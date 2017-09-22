@@ -44,7 +44,7 @@ RUN apt-get install zlib1g-dev --yes
 RUN apt-get upgrade make --yes
 
 ###INSTALL THE PROGRAMS
-RUN git clone https://github.com/latours/Docker_Pizzly.git ~/temp
+RUN git clone https://github.com/latours/Docker_Pizzly.git /data/batch
 RUN git clone https://github.com/pachterlab/kallisto.git /data/kallisto
 RUN git clone https://github.com/pmelsted/pizzly.git /data/pizzly
 #RUN ls /data/pizzly/
@@ -63,6 +63,6 @@ RUN ls /data/reference_genome/
 
 #RUN cp /data/pizzly/build/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
-RUN cp ~temp/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
+RUN cp /data/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
 ENTRYPOINT ["/data/pizzly/batch_pizzly.sh"]
