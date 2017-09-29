@@ -47,17 +47,16 @@ RUN apt-get upgrade make --yes
 RUN git clone https://github.com/latours/Docker_Pizzly.git /data/batch
 RUN git clone https://github.com/pachterlab/kallisto.git /data/kallisto
 RUN git clone https://github.com/pmelsted/pizzly.git /data/pizzly
-#RUN ls /data/pizzly/
+
 RUN mkdir /data/pizzly/build/ && cd /data/pizzly/build && cmake .. 
 RUN cd /data/pizzly/build/ && make
-RUN cd /data/pizzly/build/ && ls
-#RUN ls /data/script_pizzly_fasta
+RUN cd /data/pizzly/build/
+
 
 ###Download The GTF and FASTA Files (Reference Files)
 RUN mkdir /data/reference_genome/
-RUN wget http://ftp.ensembl.org/pub/release-90/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz > /data/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz
 RUN wget http://ftp.ensembl.org/pub/release-90/gtf/homo_sapiens/Homo_sapiens.GRCh38.90.gtf.gz > /data/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz
-RUN ls /data/reference_genome/
+RUN wget http://ftp.ensembl.org/pub/release-90/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz > /data/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz
 
 #COPY . /data/pizzly/build/
 
