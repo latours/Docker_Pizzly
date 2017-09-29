@@ -24,12 +24,12 @@ cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 EOF
 #Maintainer:
-echo "\nPizzly Fusion Caller for RNA-seq Read Pairs:"
-echo "\nMAINTAINER:\nSara Latour"
-echo "\nCONTACT:\nsaralatour@outlook.com"
+echo -e "\nPizzly Fusion Caller for RNA-seq Read Pairs:"
+echo -e "\nMAINTAINER:\nSara Latour"
+echo -e "\nCONTACT:\nsaralatour@outlook.com"
 #Date:
 now="$(date +'%d_%m_%Y')"
-echo "\nDATE(dd_mm_yyyy):\n$now\n"
+echo -e "\nDATE(dd_mm_yyyy):\n$now\n"
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 EOF
@@ -38,31 +38,31 @@ inputdir=$1
 outputdir=$2
 if [ $# -ne 2 ]
   then
-    echo "\nERROR MESSAGE:\nPlease ensure that the full path to the Input and Output Directories are provided:\n"
+    echo -e "\nERROR MESSAGE:\nPlease ensure that the full path to the Input and Output Directories are provided:\n"
 	exit 1
 fi
 
-echo "\nChecking if Input directory is valid..."
+echo -e "\nChecking if Input directory is valid..."
 if   [ -d "${inputdir}" ]
-then echo "✓"
-else echo "Input is not a valid directory... exiting now\n";
+then echo -e "✓"
+else echo -e "Input is not a valid directory... exiting now\n";
      exit 1
 fi
 
 
-echo "Checking if Output directory is valid..."
+echo -e "Checking if Output directory is valid..."
 if   [ -d "${outputdir}" ]
-then echo "✓"
-else echo "Output is not a valid directory... exiting now\n";
+then echo -e "✓"
+else echo -e "Output is not a valid directory... exiting now\n";
      exit 1
 fi
 
 
 #Input:
-echo "The Directory Selected is:$inputdir\n"
+echo -e "The Directory Selected is:$inputdir\n"
 
 #Create Output File
-echo "Creating Sub-Directories for Output..."
+echo -e "Creating Sub-Directories for Output..."
 mkdir -p $outputdir/Fastas
 mkdir -p $outputdir/Json
 mkdir -p $outputdir/Pizzly_Run_Information
@@ -77,17 +77,17 @@ cat << "EOF"
 EOF
 
 #RUN Index
-echo "\nBeginning Index Step for Kallisto...\n"
+echo -e "\nBeginning Index Step for Kallisto...\n"
 $kallistopath/kallisto index -i $outputdir/index.idx -k 31 $cdna 
-echo "Completed Index Step!\n"
+echo -e "Completed Index Step!\n"
 
 #RUN Kallisto Quant & Pizzly
 cat filenames.txt | while read line; do sed 's/R[1,2]_001.fastq.gz//g' ; done > $outputdir/kallisto_list.txt
 sort -u $outputdir/kallisto_list.txt > $outputdir/kallisto_unique_list.txt
 
-echo "Running Pizzly Fusion Caller on the following RNA-seq Pairs IDs...\n"
+echo -e "Running Pizzly Fusion Caller on the following RNA-seq Pairs IDs...\n"
 cat $outputdir/kallisto_unique_list.txt
-echo "\nStarting Kallisto and Pizzly runs for files from $inputdir directory now...\n"
+echo -e "\nStarting Kallisto and Pizzly runs for files from $inputdir directory now...\n"
 
 cat $outputdir/kallisto_unique_list.txt | while read line; do echo "$line"; $kallistopath/kallisto quant -i $outputdir/index.idx --fusion -o $outputdir/"$line"pizzly_out $inputdir/"$line"R1_001.fastq.gz $inputdir/"$line"R2_001.fastq.gz ; $pizzlypath/build/pizzly -k 31 --gtf $GTF --cache index.cache.txt --align-score 2 --insert-size 400 --fasta $cdna --output "$line"pizzly_out $outputdir/"$line"pizzly_out/fusion.txt ; $pizzlypath/scripts/flatten_json.py "$line"pizzly_out.json > "$line""$now".txt;tr ' ' '\t'<"$line""$now".txt > "$line""$now"_final.txt ; awk '{print $1,$2,$3,$4,$5,$6}' "$line""$now"_final.txt > "$line""$now"_no_filter.txt ; awk '{if ($5&&$6 != 0 ) print $1,$2,$3,$4,$5,$6;}' "$line""$now"_final.txt > "$line""$now"_sc_pc_filter.txt ; rm "$line""$now".txt; done
 
@@ -96,7 +96,7 @@ cat << "EOF"
 EOF
 
 #Organize Files
-echo "Removing Intermediate Files and Organizing Output...\n"
+echo -e "Removing Intermediate Files and Organizing Output...\n"
 cd $outputdir
 cp *.fasta Fastas/
 cp *.json Json/
@@ -109,14 +109,13 @@ rm *.fasta
 rm kallisto_*
 rm filenames.txt
 rm *_final.txt
-r
-echo "Final Output Files are located in the FusionCaller_Output_"$now"/ Directory" > FinalOutputLocation.txt
+echo -e "Final Output Files are located in the FusionCaller_Output_"$now"/ Directory" > FinalOutputLocation.txt
 
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 EOF
-echo "Pizzly Fusion Caller Run Complete for $inputdir!\n"
-echo "Exiting now..."
+echo -e "Pizzly Fusion Caller Run Complete for $inputdir!\n"
+echo -e "Exiting now..."
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 EOF
