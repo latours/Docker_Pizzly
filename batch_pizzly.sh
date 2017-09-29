@@ -103,7 +103,7 @@ cp *.json Json/
 cp -R *pizzly_out Pizzly_Run_Information/
 rm -R *pizzly_out 
 cp *filter.txt FusionCaller_Output_"$now"/
-rm *filter.tx
+rm *filter.txt
 rm *.json
 rm *.fasta
 rm kallisto_*
