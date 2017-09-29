@@ -44,10 +44,13 @@ RUN apt-get install zlib1g-dev --yes
 RUN apt-get upgrade make --yes
 
 ###INSTALL THE PROGRAMS
-RUN git clone https://github.com/pachterlab/kallisto.git /data/kallisto
-RUN git clone https://github.com/pmelsted/pizzly.git /data/pizzly
+#Download Script for Batch Processing
 RUN git clone https://github.com/latours/Docker_Pizzly.git /data/batch
-
+#Download Kallisto Program 
+RUN git clone https://github.com/pmelsted/pizzly.git /data/pizzly
+#Download Pizzly Program
+RUN git clone https://github.com/pachterlab/kallisto.git /data/kallisto
+#Build Pizzly
 RUN mkdir /data/pizzly/build/ && cd /data/pizzly/build && cmake .. 
 RUN cd /data/pizzly/build/ && make
 RUN cd /data/pizzly/build/
