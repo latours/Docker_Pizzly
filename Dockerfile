@@ -44,9 +44,9 @@ RUN apt-get install zlib1g-dev --yes
 RUN apt-get upgrade make --yes
 
 ###INSTALL THE PROGRAMS
-RUN git clone https://github.com/latours/Docker_Pizzly.git /data/batch
 RUN git clone https://github.com/pachterlab/kallisto.git /data/kallisto
 RUN git clone https://github.com/pmelsted/pizzly.git /data/pizzly
+RUN git clone https://github.com/latours/Docker_Pizzly.git /data/batch
 
 RUN mkdir /data/pizzly/build/ && cd /data/pizzly/build && cmake .. 
 RUN cd /data/pizzly/build/ && make
@@ -58,9 +58,6 @@ RUN mkdir /data/reference_genome/
 RUN wget http://ftp.ensembl.org/pub/release-90/gtf/homo_sapiens/Homo_sapiens.GRCh38.90.gtf.gz > /data/reference_genome/Homo_sapiens.GRCh38.90.gtf.gz
 RUN wget http://ftp.ensembl.org/pub/release-90/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz > /data/reference_genome/Homo_sapiens.GRCh38.cdna.all.fa.gz
 
-#COPY . /data/pizzly/build/
-
-#RUN cp /data/pizzly/build/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
 RUN cp /data/batch/batch_pizzly.sh /data/pizzly/batch_pizzly.sh && chmod a+x /data/pizzly/batch_pizzly.sh
 
