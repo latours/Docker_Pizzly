@@ -65,9 +65,11 @@ echo "The Directory Selected is:$inputdir\n"
 echo "Creating Sub-Directories for Output..."
 mkdir -p $outputdir/Fastas
 mkdir -p $outputdir/Json
-
+mkdir -p $outputdir/Pizzly_Run_Information
+mkdir -p $outputdir/FusionCaller_Output_"$now"
 #Create File Lists - Note to self: Change it to find later.
-ls $inputdir > $outputdir/filenames.txt 
+cd $inputdir
+find *."fastq.gz" > $outputdir/filenames.txt 
 cd $outputdir
 
 cat << "EOF"
@@ -94,16 +96,21 @@ cat << "EOF"
 EOF
 
 #Organize Files
-echo "Removing Intermediate Files and Refining Output...\n"
+echo "Removing Intermediate Files and Organizing Output...\n"
 cd $outputdir
 cp *.fasta Fastas/
 cp *.json Json/
+cp -R *pizzly_out Pizzly_Run_Information/
+rm -R *pizzly_out 
+cp *filter.txt FusionCaller_Output_"$now"/
+rm *filter.tx
 rm *.json
 rm *.fasta
 rm kallisto_*
 rm filenames.txt
 rm *_final.txt
-
+r
+echo "Final Output Files are located in the FusionCaller_Output_"$now"/ Directory" > FinalOutputLocation.txt
 
 cat << "EOF"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
